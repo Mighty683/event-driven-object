@@ -36,3 +36,33 @@ DoTest(function () {
   strictEqual(testFunResult.called, false)
   strictEqual(model.getEventList()['event'], undefined)
 })
+
+
+// Listen to another object
+DoTest(function () {
+  let model = new EventEmitter()
+  let model2 = new EventEmitter()
+  model.listenTo(model2, 'event', testFun)
+  model2.emit('event')
+  strictEqual(testFunResult.called, true)
+})
+
+// should listen only to proper event
+DoTest(function () {
+  let model = new EventEmitter()
+  let model2 = new EventEmitter()
+  model.listenTo(model2, 'event2', testFun)
+  model2.emit('event')
+  strictEqual(testFunResult.called, false)
+})
+
+// Should remove listener
+DoTest(function () {
+  let model = new EventEmitter()
+  let model2 = new EventEmitter()
+  model.listenTo(model2, 'event', testFun)
+  model.stopListenTo(model2, 'event')
+  model2.emit('event')
+  strictEqual(testFunResult.called, false)
+})
+
