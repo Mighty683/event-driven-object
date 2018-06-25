@@ -22,7 +22,6 @@ let DoTest = function (callback) {
 DoTest(function () {
   let model = new EventEmitter()
   model.on('event', testFun)
-  strictEqual(testFun, model.getEventList()['event'].callback)
   model.emit('event', 2, 2)
   strictEqual(testFunResult.called, true)
 })
@@ -34,7 +33,6 @@ DoTest(function () {
   model.off('event')
   model.emit('event', 2, 2)
   strictEqual(testFunResult.called, false)
-  strictEqual(model.getEventList()['event'], undefined)
 })
 
 
