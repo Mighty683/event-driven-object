@@ -34,13 +34,15 @@ EventEmiter.prototype.off = function (eventName) {
 }
 
 EventEmiter.prototype.emit = function (eventName) {
-  Object.keys(_events[this._listenId]).forEach(function (key) {
-    if (key === eventName) {
-      Object.values(_events[this._listenId][key]).forEach(function (cb) {
-        cb()
-      })
-    }
-  }.bind(this))
+  if (_events[this._listenId]) {
+    Object.keys(_events[this._listenId]).forEach(function (key) {
+      if (key === eventName) {
+        Object.values(_events[this._listenId][key]).forEach(function (cb) {
+          cb()
+        })
+      }
+    }.bind(this))
+  }
 }
 
 EventEmiter.prototype.listenTo = function (object, eventName, callback) {
