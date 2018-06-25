@@ -22,8 +22,10 @@ let DoTest = function (callback) {
 DoTest(function () {
   let model = new EventEmitter()
   model.on('event', testFun)
-  model.emit('event', 2, 2)
+  model.emit('event', 2, 3)
   strictEqual(testFunResult.called, true)
+  strictEqual(testFunResult.args[0], 2)
+  strictEqual(testFunResult.args[1], 3)
 })
 
 // Remove listener Test

@@ -1,6 +1,6 @@
 {
   "name": "event-driven-object",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple event driver object",
   "main": "index.js",
   "scripts": {
