@@ -28,6 +28,42 @@ DoTest(function () {
   strictEqual(testFunResult.args[1], 3)
 })
 
+// Listen once Test
+DoTest(function () {
+  let model = new EventEmitter()
+  model.once('event', testFun)
+  model.emit('event', 2, 3)
+  strictEqual(testFunResult.called, true)
+  strictEqual(testFunResult.args[0], 2)
+  strictEqual(testFunResult.args[1], 3)
+  PrepareTestFun()
+  model.emit('event', 2, 3)
+  strictEqual(testFunResult.called, false)
+})
+
+// Listen and return value from function
+DoTest(function () {
+  let model = new EventEmitter()
+  let fun = function () {
+    return 'text'
+  }
+  model.on('event', fun)
+  strictEqual(model.emit('event'), 'text')
+})
+
+// Listen once Test shouldn't change context
+DoTest(function () {
+  let model = new EventEmitter()
+  this.lol = {
+    text: 'context passing text'
+  }
+  let fun = function () {
+    return this.lol.text
+  }
+  model.once('event', fun)
+  strictEqual(model.emit('event'), 'context passing text')
+})
+
 // Remove listener Test
 DoTest(function () {
   let model = new EventEmitter()

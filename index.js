@@ -29,21 +29,31 @@ EventEmiter.prototype.on = function (eventName, callback) {
   this._setEvent(this._listenId, eventName, callback)
 }
 
+EventEmiter.prototype.once = function (eventName, callback) {
+  this.on(eventName, function () {
+    let result = callback.apply(null, Array.prototype.slice.call(arguments))
+    this.off(eventName)
+    return result
+  }.bind(this))
+}
+
 EventEmiter.prototype.off = function (eventName) {
   this._unsetEvent(this._listenId, eventName)
 }
 
 EventEmiter.prototype.emit = function (eventName) {
   let args = arguments
+  let result
   if (_events[this._listenId]) {
     Object.keys(_events[this._listenId]).forEach(function (key) {
       if (key === eventName) {
         Object.values(_events[this._listenId][key]).forEach(function (cb) {
-          cb.apply(this, Array.prototype.slice.call(args).slice(1))
+          result = cb.apply(null, Array.prototype.slice.call(args).slice(1))
         }.bind(this))
       }
     }.bind(this))
   }
+  return result
 }
 
 EventEmiter.prototype.listenTo = function (object, eventName, callback) {
